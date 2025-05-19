@@ -3,6 +3,9 @@
 A secure, responsive, and mobile-friendly web application to help individuals complete their AA Fourth Step Inventory. This app is built entirely with **HTML**, **CSS (Tailwind)**, and **Vanilla JavaScript**, and stores data securely in the browser using **LocalStorage** with optional **AES encryption**.
 
 ---
+## 📚 **To Use or Demo this app**
+https://4thstep.org
+---
 
 ## 📚 **About the 4th Step**
 
@@ -42,5 +45,45 @@ If enabled, your inventory data is encrypted using AES before being saved to Loc
 ## 📦 **How to Run This App Locally**
 
 1. Clone the repository:
-   
-   git clone https://github.com/ideakarma/4thstep.git
+
+    ```bash
+    git clone https://github.com/ideakarma/4thstep.git
+    ```
+
+2. Open the project folder and launch the app by opening `index.html` in your web browser.
+
+> No backend, no database, and no dependencies required! Works entirely offline.
+
+---
+
+## 📤 **Export Options**
+
+- Export your completed inventory as a professionally styled **PDF** or **HTML**.
+- Easily share with a sponsor or keep for personal reflection.
+- All exports maintain clear formatting with bold categories and clean layouts.
+
+---
+
+## 📚 **Further Reading**
+
+- [Official AA Website – The Twelve Steps](https://www.aa.org/the-twelve-steps)
+- *Alcoholics Anonymous: The Big Book* (4th Edition)
+
+---
+
+## 🛡️ **Disclaimer**
+
+This tool is not affiliated with Alcoholics Anonymous World Services. It is intended as a helpful personal tool for those working through the AA program. Always consult your sponsor or group for guidance.
+
+---
+
+## ⚙️ **Open Source and License**
+
+This project is **fully open-source** and available on [GitHub](https://github.com/ideakarma/4thstep).  
+Released under the **MIT License** — free for personal and commercial use with proper attribution.
+
+---
+
+---
+
+Made with ❤️ to support your recovery journey.
