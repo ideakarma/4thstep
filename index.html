@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AA 4th Step Inventory</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.2.0/crypto-js.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body class="bg-gray-100 p-4 flex flex-col items-center min-h-screen">
+    <!-- Top Help Link -->
+    <div class="w-full flex justify-center mb-4">
+        <button id="openModal" class="text-blue-600 underline font-semibold hover:text-blue-800 text-sm md:text-base">
+            How to Complete Your 4th Step Inventory
+        </button>
+    </div>
+
+    <!-- Main App Container -->
+    <div class="container w-full max-w-2xl bg-white shadow-lg rounded-lg p-4 md:p-6 flex-1">
+        <h1 class="text-2xl md:text-3xl font-bold text-center mb-6">AA 4th Step Inventory</h1>
+
+        <!-- Encryption Section -->
+        <div class="mb-4 bg-gray-50 p-4 rounded">
+            <label class="flex items-center">
+                <input type="checkbox" id="useEncryption" class="mr-2">
+                <span class="font-semibold text-sm md:text-base">Use Encryption</span>
+            </label>
+            <input type="password" id="password" 
+                placeholder="Encryption password (if enabled)" 
+                class="mt-2 w-full border p-2 rounded bg-yellow-50 text-sm md:text-base">
+            <small class="text-gray-600 block">If enabled, your entries are encrypted and require this password.</small>
+        </div>
+
+        <!-- Input Form -->
+        <form class="space-y-4">
+            <div>
+                <label class="font-semibold text-sm md:text-base">Category:</label>
+                <select id="category" class="w-full border p-2 rounded text-sm md:text-base">
+                    <option>Resentments</option>
+                    <option>Fears</option>
+                    <option>Harms Done</option>
+                    <option>Relationship Issues</option>
+                    <option>Dishonesty</option>
+                    <option>Selfishness</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="font-semibold text-sm md:text-base">Person or Entity Involved:</label>
+                <input type="text" id="subject" class="w-full border p-2 rounded text-sm md:text-base">
+            </div>
+
+            <div>
+                <label class="font-semibold text-sm md:text-base">Cause:</label>
+                <textarea id="cause" class="w-full border p-2 rounded text-sm md:text-base"></textarea>
+            </div>
+
+            <div>
+    <label class="font-semibold text-sm md:text-base">Affected Areas:</label>
+    <div id="affectedAreas" class="grid grid-cols-2 gap-2 mt-2">
+        <label class="flex items-center bg-gray-100 p-2 rounded cursor-pointer hover:bg-gray-200">
+            <input type="checkbox" value="Self-Esteem" class="mr-2">
+            <span class="text-sm md:text-base">Self-Esteem</span>
+        </label>
+        <label class="flex items-center bg-gray-100 p-2 rounded cursor-pointer hover:bg-gray-200">
+            <input type="checkbox" value="Pride" class="mr-2">
+            <span class="text-sm md:text-base">Pride</span>
+        </label>
+        <label class="flex items-center bg-gray-100 p-2 rounded cursor-pointer hover:bg-gray-200">
+            <input type="checkbox" value="Emotional Security" class="mr-2">
+            <span class="text-sm md:text-base">Emotional Security</span>
+        </label>
+        <label class="flex items-center bg-gray-100 p-2 rounded cursor-pointer hover:bg-gray-200">
+            <input type="checkbox" value="Financial Security" class="mr-2">
+            <span class="text-sm md:text-base">Financial Security</span>
+        </label>
+        <label class="flex items-center bg-gray-100 p-2 rounded cursor-pointer hover:bg-gray-200">
+            <input type="checkbox" value="Relationships" class="mr-2">
+            <span class="text-sm md:text-base">Relationships</span>
+        </label>
+        <label class="flex items-center bg-gray-100 p-2 rounded cursor-pointer hover:bg-gray-200">
+            <input type="checkbox" value="Ambitions" class="mr-2">
+            <span class="text-sm md:text-base">Ambitions</span>
+        </label>
+        <label class="flex items-center bg-gray-100 p-2 rounded cursor-pointer hover:bg-gray-200">
+            <input type="checkbox" value="Personal Relations" class="mr-2">
+            <span class="text-sm md:text-base">Personal Relations</span>
+        </label>
+        <label class="flex items-center bg-gray-100 p-2 rounded cursor-pointer hover:bg-gray-200">
+            <input type="checkbox" value="Sexual Relations" class="mr-2">
+            <span class="text-sm md:text-base">Sexual Relations</span>
+        </label>
+        <label class="flex items-center bg-gray-100 p-2 rounded cursor-pointer hover:bg-gray-200 col-span-2">
+            <input type="checkbox" value="Fear" class="mr-2">
+            <span class="text-sm md:text-base">Fear</span>
+        </label>
+    </div>
+    <small class="text-gray-600 block mt-1">Select all that apply by tapping the options.</small>
+</div>
+
+            <div>
+                <label class="font-semibold text-sm md:text-base">My Part:</label>
+                <textarea id="myPart" class="w-full border p-2 rounded text-sm md:text-base"></textarea>
+            </div>
+
+            <button onclick="addEntry()" type="button" 
+                class="bg-blue-500 text-white px-4 py-3 rounded w-full md:w-auto text-sm md:text-base">
+                Add Entry
+            </button>
+        </form>
+
+        <!-- Entries List -->
+        <div id="entries" class="mt-8 space-y-4"></div>
+
+        <!-- Action Buttons -->
+        <div class="mt-6 flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 w-full">
+            <!-- Export Dropdown -->
+            <div class="relative w-full md:w-auto">
+                <button id="exportButton" 
+                    class="bg-green-500 text-white px-4 py-3 rounded w-full md:w-auto inline-flex items-center justify-center text-sm md:text-base">
+                    Export Inventory ▼
+                </button>
+                <div id="exportMenu" 
+                    class="hidden absolute right-0 mt-2 w-full md:w-48 bg-white border border-gray-200 rounded shadow-lg z-10">
+                    <button onclick="exportEntries('pdf')" 
+                        class="block px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left text-sm md:text-base">
+                        Export as PDF
+                    </button>
+                    <button onclick="exportEntries('html')" 
+                        class="block px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left text-sm md:text-base">
+                        Export as HTML
+                    </button>
+                </div>
+            </div>
+
+            <!-- Clear Inventory -->
+            <button onclick="clearInventory()" 
+                class="bg-red-500 text-white px-4 py-3 rounded w-full md:w-auto text-sm md:text-base">
+                Clear Inventory
+            </button>
+        </div>
+    </div>
+<!-- Modal Overlay -->
+<div id="modalOverlay" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-white rounded-lg shadow-lg p-6 max-w-xl w-full relative overflow-y-auto max-h-screen">
+        <button id="closeModal" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+        <h2 class="text-2xl font-bold mb-4 text-center">How to Complete Your 4th Step Inventory</h2>
+
+        <p class="text-gray-700 mb-4">
+            Step Four asks us to take a <strong>“searching and fearless moral inventory of ourselves.”</strong> 
+            (<em>Big Book, p. 64</em>). This is the beginning of uncovering the patterns of behavior, 
+            resentments, fears, and harms that have blocked us from recovery and spiritual growth.
+        </p>
+         <p class="text-gray-800 italic mb-4">
+            Step Four of AA is about taking a "searching and fearless moral inventory of ourselves." 
+            This process is meant to help you honestly examine personal behavior, fears, resentments, and harmful patterns.
+        </p>
+        <h3 class="text-xl font-semibold mb-2">Key Areas to Explore:</h3>
+        <ul class="list-disc list-inside text-gray-700 mb-4 space-y-2">
+            <li><strong>Resentments:</strong> Who or what do you feel resentment toward? Why?</li>
+            <li><strong>Fears:</strong> What fears drive your behavior or thoughts?</li>
+            <li><strong>Harms Done:</strong> Who have you hurt, either directly or indirectly?</li>
+            <li><strong>Relationships:</strong> How have you acted selfishly or dishonestly in relationships?</li>
+            <li><strong>Dishonesty & Selfishness:</strong> Where have you been dishonest or self-centered?</li>
+        </ul>
+
+        <h3 class="text-xl font-semibold mb-2">📝 What to Include in Your Inventory:</h3>
+
+        <ul class="list-disc list-inside text-gray-700 mb-4 space-y-4">
+            <li>
+                <strong>Resentments (<em>Big Book, p. 64–67</em>):</strong>
+                <ul class="list-disc list-inside ml-6 space-y-1 text-gray-600">
+                    <li>Who or what do I resent?</li>
+                    <li>Why do I resent them?</li>
+                    <li>How does this affect my self-esteem, pride, emotional security, financial security, ambitions, personal or sexual relationships, or fear?</li>
+                </ul>
+                <span class="italic text-gray-600 block mt-2">“Resentment is the ‘number one’ offender. It destroys more alcoholics than anything else.” (p. 64)</span>
+            </li>
+
+            <li>
+                <strong>Fears (<em>Big Book, p. 67–68</em>):</strong>
+                <ul class="list-disc list-inside ml-6 space-y-1 text-gray-600">
+                    <li>What am I afraid of?</li>
+                    <li>Why do I have this fear?</li>
+                    <li>Is this fear based on self-reliance or faith in a Higher Power?</li>
+                </ul>
+                <span class="italic text-gray-600 block mt-2">“We reviewed our fears thoroughly. We put them on paper, even though we had no resentment in connection with them.” (p. 68)</span>
+            </li>
+
+            <li>
+                <strong>Harms to Others (<em>Big Book, p. 69</em>):</strong>
+                <ul class="list-disc list-inside ml-6 space-y-1 text-gray-600">
+                    <li>Whom have I hurt, directly or indirectly?</li>
+                    <li>Was I selfish, dishonest, inconsiderate, or driven by fear?</li>
+                    <li>Did I arouse jealousy, suspicion, or bitterness?</li>
+                </ul>
+                <span class="italic text-gray-600 block mt-2">“We asked God to mold our ideals and help us to live up to them.” (p. 69)</span>
+            </li>
+
+            <li>
+                <strong>Sexual Conduct and Relationships (<em>Big Book, p. 68–70</em>):</strong>
+                <ul class="list-disc list-inside ml-6 space-y-1 text-gray-600">
+                    <li>Where was I selfish or dishonest in relationships?</li>
+                    <li>Have I acted out of self-will or harmed others in my personal life?</li>
+                    <li>What should my ideal be in relationships going forward?</li>
+                </ul>
+                <span class="italic text-gray-600 block mt-2">“In this way we tried to shape a sane and sound ideal for our future sex life.” (p. 69)</span>
+            </li>
+        </ul>
+
+        <h3 class="text-xl font-semibold mb-2">📖 How to Approach This Honestly:</h3>
+        <p class="text-gray-700 mb-4">
+            <span class="italic text-gray-600">“We searched out the flaws in our make-up which caused our failure. 
+            Being convinced that self, manifested in various ways, was what had defeated us, we considered its common manifestations.” (p. 64)</span>
+        </p>
+
+        <p class="text-gray-700 mb-4">
+            The goal isn’t to judge or condemn yourself but to discover patterns that have blocked you from freedom and peace. 
+            This inventory is an essential preparation for Step Five, where these discoveries are shared with another person.
+        </p>
+
+        <div class="mt-6 flex justify-between items-center">
+            <a href="https://www.aa.org/the-twelve-steps" target="_blank" class="text-blue-600 underline hover:text-blue-800">
+                📚 Learn More on the Official AA Website
+            </a>
+            <button onclick="printModal()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                🖨️ Print This Guide
+            </button>
+        </div>
+    </div>
+</div>
+
+
+    <script src="app.js"></script>
+</body>
+</html>
