@@ -110,7 +110,8 @@ function exportEntries(exportType) {
         const doc = new jsPDF();
 
         const pageWidth = doc.internal.pageSize.getWidth();
-
+        const margin = 15;
+        const wrapWidth = pageWidth - margin * 2;
         doc.setFont("helvetica", "bold");
         doc.setFontSize(20);
         doc.setTextColor(30, 30, 30);
@@ -121,52 +122,59 @@ function exportEntries(exportType) {
 
         let y = 30;
 
-        entries.forEach((entry, index) => {
-            if (y > 260) {
-                doc.addPage();
-                y = 20;
-            }
+   entries.forEach((entry, index) => {
+    if (y > 260) {
+        doc.addPage();
+        y = 20;
+    }
 
-            doc.setFont("helvetica", "bold");
-            doc.setFontSize(14);
-            doc.setTextColor(40, 80, 120);
-            doc.text(`${index + 1}. ${entry.category}`, 10, y);
-            y += 8;
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(14);
+    doc.setTextColor(40, 80, 120);
+    doc.text(`${index + 1}. ${entry.category}`, margin, y);
+    y += 8;
 
-            doc.setFont("helvetica", "bold");
-            doc.setFontSize(12);
-            doc.setTextColor(0);
-            doc.text("Person or Entity:", 12, y);
-            doc.setFont("times", "normal");
-            doc.text(entry.subject, 50, y);
-            y += 7;
+    // Subject
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(12);
+    doc.setTextColor(0);
+    doc.text("Person or Entity:", margin, y);
+    doc.setFont("times", "normal");
+    const subjectLines = doc.splitTextToSize(entry.subject, wrapWidth);
+    doc.text(subjectLines, margin + 35, y);
+    y += subjectLines.length * 6 + 4;
 
-            doc.setFont("helvetica", "bold");
-            doc.text("Cause:", 12, y);
-            doc.setFont("times", "normal");
-            const causeLines = doc.splitTextToSize(entry.cause, 180);
-            doc.text(causeLines, 50, y + 6);
-            y += causeLines.length * 6 +4;
+    // Cause
+    doc.setFont("helvetica", "bold");
+    doc.text("Cause:", margin, y);
+    doc.setFont("times", "normal");
+    const causeLines = doc.splitTextToSize(entry.cause, wrapWidth - 35);
+    doc.text(causeLines, margin + 35, y);
+    y += causeLines.length * 6 + 4;
 
-            doc.setFont("helvetica", "bold");
-            doc.text("Affected Areas:", 12, y);
-            doc.setFont("times", "normal");
-            const affectedLines = doc.splitTextToSize(entry.affected, 180);
-            doc.text(affectedLines, 15, y + 6);
-            y += affectedLines.length * 6 + 4;
+    // Affected Areas
+    doc.setFont("helvetica", "bold");
+    doc.text("Affected Areas:", margin, y);
+    doc.setFont("times", "normal");
+    const affectedLines = doc.splitTextToSize(entry.affected, wrapWidth - 35);
+    doc.text(affectedLines, margin + 35, y);
+    y += affectedLines.length * 6 + 4;
 
-            doc.setFont("helvetica", "bold");
-            doc.text("My Part:", 12, y);
-            doc.setFont("times", "normal");
-            const myPartLines = doc.splitTextToSize(entry.myPart, 180);
-            doc.text(myPartLines, 15, y + 6);
-            y += myPartLines.length * 6 + 8;
+    // My Part
+    doc.setFont("helvetica", "bold");
+    doc.text("My Part:", margin, y);
+    doc.setFont("times", "normal");
+    const myPartLines = doc.splitTextToSize(entry.myPart, wrapWidth - 35);
+    doc.text(myPartLines, margin + 35, y);
+    y += myPartLines.length * 6 + 6;
 
-            doc.setDrawColor(180, 180, 180);
-            doc.setLineWidth(0.2);
-            doc.line(10, y + 2, pageWidth - 10, y + 2);
-            y += 10;
-        });
+    // Divider
+    doc.setDrawColor(180, 180, 180);
+    doc.setLineWidth(0.2);
+    doc.line(margin, y, pageWidth - margin, y);
+    y += 10;
+});
+
 
         const pageCount = doc.getNumberOfPages();
         for (let i = 1; i <= pageCount; i++) {
