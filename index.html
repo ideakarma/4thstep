@@ -143,10 +143,19 @@
     </div>
 <!-- Modal Overlay -->
 <div id="modalOverlay" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
-    <div class="bg-white rounded-lg shadow-lg p-6 max-w-xl w-full relative overflow-y-auto max-h-screen">
-        <button id="closeModal" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
-        <h2 class="text-2xl font-bold mb-4 text-center">How to Complete Your 4th Step Inventory</h2>
+    <div class="relative bg-white rounded-lg shadow-lg p-4 sm:p-6 w-[95vw] sm:max-w-xl max-h-[90vh] overflow-y-auto">
+        <div class="flex justify-between items-start mb-4">
+  <h2 class="text-2xl font-bold text-center w-full">How to Complete Your 4th Step Inventory</h2>
+  <button id="closeModal"
+          class="ml-auto -mt-1 w-10 h-10 rounded-full bg-red-600 text-white text-2xl font-bold 
+                 flex items-center justify-center shadow hover:bg-red-700 focus:outline-none"
+          aria-label="Close Modal">
+    &times;
+  </button>
+</div>
 
+        <div class="prose prose-sm text-gray-700"></div>
+        
         <p class="text-gray-700 mb-4">
             Step Four asks us to take a <strong>“searching and fearless moral inventory of ourselves.”</strong> 
             (<em>Big Book, p. 64</em>). This is the beginning of uncovering the patterns of behavior, 
@@ -219,7 +228,7 @@
             The goal isn’t to judge or condemn yourself but to discover patterns that have blocked you from freedom and peace. 
             This inventory is an essential preparation for Step Five, where these discoveries are shared with another person.
         </p>
-
+        
         <div class="mt-6 flex justify-between items-center">
             <a href="https://www.aa.org/the-twelve-steps" target="_blank" class="text-blue-600 underline hover:text-blue-800">
                 📚 Learn More on the Official AA Website
@@ -227,7 +236,7 @@
             <button onclick="printModal()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
                 🖨️ Print This Guide
             </button>
-        </div>
+        </div></div>
     </div>
 </div>
 <footer class="w-full text-center mt-8 p-4 text-gray-500 text-sm">
