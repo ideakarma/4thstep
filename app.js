@@ -144,20 +144,23 @@ function exportEntries(exportType) {
             doc.setFont("helvetica", "bold");
             doc.text("Cause:", 12, y);
             doc.setFont("times", "normal");
-            doc.text(entry.cause, 50, y);
-            y += 7;
+            const causeLines = doc.splitTextToSize(entry.cause, 180);
+            doc.text(causeLines, 50, y + 6);
+            y += causeLines.length * 6 +4;
 
             doc.setFont("helvetica", "bold");
             doc.text("Affected Areas:", 12, y);
             doc.setFont("times", "normal");
-            doc.text(entry.affected, 50, y);
-            y += 7;
+            const affectedLines = doc.splitTextToSize(entry.affected, 180);
+            doc.text(affectedLines, 15, y + 6);
+            y += affectedLines.length * 6 + 4;
 
             doc.setFont("helvetica", "bold");
             doc.text("My Part:", 12, y);
             doc.setFont("times", "normal");
-            doc.text(entry.myPart, 50, y);
-            y += 7;
+            const myPartLines = doc.splitTextToSize(entry.myPart, 180);
+            doc.text(myPartLines, 15, y + 6);
+            y += myPartLines.length * 6 + 8;
 
             doc.setDrawColor(180, 180, 180);
             doc.setLineWidth(0.2);
